@@ -117,7 +117,6 @@
       align-items: center;
       font-weight: 600;
       color: var(--forest-dark);
-      flex-wrap: wrap;
     }
 
     .hero {
@@ -136,21 +135,18 @@
       padding: 90px 0;
     }
 
-    .hero-logo-wrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 18px;
-      overflow: hidden;
+    .hero-logo {
+      display: block;
+      width: 340px;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 18px auto;
     }
 
-    .hero-logo {
-      width: auto;
-      max-width: 320px;
-      max-height: 240px;
-      height: auto;
-      object-fit: contain;
+    @media (min-width: 701px) {
+      .hero-logo {
+        transform: translateX(-190px);
+      }
     }
 
     .eyebrow {
@@ -414,6 +410,7 @@
 
       .nav-links {
         width: 100%;
+        flex-wrap: wrap;
         gap: 12px;
       }
 
@@ -427,13 +424,11 @@
         padding: 40px 0;
       }
 
-      .hero-logo-wrap {
-        margin-bottom: 16px;
-      }
-
       .hero-logo {
-        max-width: 220px;
-        max-height: 150px;
+        width: 220px;
+        max-width: 100%;
+        margin: 0 auto 16px auto;
+        transform: none;
       }
 
       .eyebrow {
@@ -512,11 +507,8 @@
     <section class="hero" id="home">
       <div class="container">
         <div class="hero-content">
-          <div class="hero-logo-wrap">
-            <img src="IMG_9751.jpeg" alt="Minneapolis North Outdoor Services LLC logo" class="hero-logo">
-          </div>
-
-          <span class="eyebrow">Proudly Serving Minneapolis &amp; Surrounding Areas</span>
+          <img src="IMG_9751.jpeg" alt="Minneapolis North Outdoor Services LLC logo" class="hero-logo">
+          <span class="eyebrow">Proudly Serving Minneapolis & Surrounding Areas</span>
           <h1>Minnesota Outdoor Services You Can Count On</h1>
           <div class="slogan">Four Seasons, One Trusted Team</div>
           <p>
@@ -556,7 +548,7 @@
           </div>
 
           <div class="card">
-            <h3>Lawn &amp; Yard Care</h3>
+            <h3>Lawn & Yard Care</h3>
             <p>Routine yard upkeep that helps your property stay neat, attractive, and well maintained.</p>
           </div>
 
