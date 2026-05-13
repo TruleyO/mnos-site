@@ -342,14 +342,25 @@
     }
 
     .cta {
-      background: var(--cream);
+      background:
+        linear-gradient(rgba(247, 245, 239, 0.55), rgba(247, 245, 239, 0.55)),
+        url("handshake.jpg") center/cover no-repeat;
       text-align: center;
+    }
+
+    .cta .section-title {
+      color: #153729;
+    }
+
+    .cta .section-subtitle {
+      color: #1f2b22;
+      font-weight: 700;
     }
 
     .contact-box {
       max-width: 760px;
       margin: 0 auto;
-      background: var(--white);
+      background: rgba(255, 255, 255, 0.92);
       border-radius: 24px;
       padding: 36px;
       box-shadow: var(--shadow);
