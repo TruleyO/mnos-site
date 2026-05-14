@@ -251,7 +251,20 @@
     }
 
     .why {
-      background: linear-gradient(180deg, #ffffff, #f7fbf8);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+        url("Tree_Sun.PNG") center/cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    .why .section-title {
+      color: var(--forest-dark);
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.45);
+    }
+
+    .why .section-subtitle {
+      color: #3a463f;
+      font-weight: 600;
     }
 
     .why-grid {
@@ -263,13 +276,19 @@
     .feature {
       padding: 24px;
       border-radius: var(--radius);
-      background: #f7faf8;
-      border: 1px solid #e4ece7;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(228, 236, 231, 0.9);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(3px);
     }
 
     .feature h3 {
       color: var(--forest);
       margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: #4d5a52;
     }
 
     .banner {
@@ -428,6 +447,10 @@
       .why-grid,
       .contact-grid {
         grid-template-columns: 1fr;
+      }
+
+      .why {
+        background-attachment: scroll;
       }
     }
 
