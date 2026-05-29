@@ -473,24 +473,27 @@
 
     .cta {
       background:
-        linear-gradient(rgba(247, 245, 239, 0.30), rgba(247, 245, 239, 0.30)),
-        url("handshake.jpg") center/cover no-repeat;
+        linear-gradient(rgba(21, 55, 41, 0.68), rgba(21, 55, 41, 0.68)),
+        url("Stripes_1.jpg") center/cover no-repeat;
       text-align: center;
     }
 
     .cta .section-title {
-      color: #153729;
+      color: var(--white);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
     }
 
     .cta .section-subtitle {
-      color: #1f2b22;
+      color: #f0f7f3;
       font-weight: 700;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .contact-box {
       max-width: 760px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.72);
       border-radius: 24px;
       padding: 36px;
       box-shadow: var(--shadow);
@@ -680,7 +683,7 @@
 
       .contact-box {
         padding: 24px;
-        background: rgba(255, 255, 255, 0.65);
+        background: rgba(255, 255, 255, 0.78);
       }
 
       .footer-wrap {
@@ -1035,19 +1038,19 @@
 
     <section class="cta" id="contact">
       <div class="container">
-        <h2 class="section-title">Ready to Get Started?</h2>
+        <h2 class="section-title">Ready to Get Your Property Cleaned Up?</h2>
 
         <p class="section-subtitle">
-          Whether you need seasonal cleanup, outdoor upkeep, or help maintaining your
-          property year-round, Minneapolis North Outdoor Services LLC is ready to help.
+          Whether you need a seasonal cleanup, lawn care, landscape refresh, or year-round
+          property support, Minneapolis North Outdoor Services LLC is ready to help.
         </p>
 
         <div class="contact-box">
           <h3>Request a Quote</h3>
 
           <p class="contact-box-intro">
-            Tell us a little about your property and the work you need done, and we’ll
-            get back to you with the next steps.
+            Send us a message with the service you need, your property location, and any
+            details or photos that help show the job. We’ll follow up with the next steps.
           </p>
 
           <div class="contact-grid">
@@ -1067,13 +1070,18 @@
             </div>
 
             <div class="contact-item">
-              <strong>Availability</strong>
-              <span>Year-round outdoor service support</span>
+              <strong>Best Info to Include</strong>
+              <span>Service needed, address, timeline, and photos if available</span>
             </div>
           </div>
 
           <div class="contact-button-wrap">
-            <a class="btn btn-primary" href="mailto:Contact@mplsnorth.com">Contact Us</a>
+            <a
+              class="btn btn-primary"
+              href="mailto:Contact@mplsnorth.com?subject=Quote%20Request%20-%20Minneapolis%20North%20Outdoor%20Services&body=Hello%20MNOS%2C%0A%0AI%20would%20like%20to%20request%20a%20quote.%0A%0AService%20needed%3A%0AProperty%20address%2Flocation%3A%0ATimeline%3A%0AAdditional%20details%3A%0A%0AThank%20you."
+            >
+              Request a Quote by Email
+            </a>
           </div>
         </div>
       </div>
