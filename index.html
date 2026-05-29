@@ -250,6 +250,34 @@
       font-size: 0.98rem;
     }
 
+    .our-work {
+      background: var(--cream);
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .work-photo {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--white);
+    }
+
+    .work-photo img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .work-photo:hover img {
+      transform: scale(1.03);
+    }
+
     .why {
       background:
         linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
@@ -508,7 +536,8 @@
 
     @media (max-width: 980px) {
       .services-grid,
-      .process-grid {
+      .process-grid,
+      .work-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -593,11 +622,16 @@
 
       .services-grid,
       .process-grid,
+      .work-grid,
       .why-grid,
       .about-wrap,
       .team-wrap,
       .contact-grid {
         grid-template-columns: 1fr;
+      }
+
+      .work-photo img {
+        height: 280px;
       }
 
       .about-image img {
@@ -647,6 +681,7 @@
       <nav class="nav-links">
         <a href="#home">Home</a>
         <a href="#services">Services</a>
+        <a href="#work">Our Work</a>
         <a href="#about">About</a>
         <a href="#team">Team</a>
         <a href="#contact">Contact</a>
@@ -746,6 +781,47 @@
               Outdoor service support through Minnesota’s changing seasons, with reliable
               communication and dependable follow-through.
             </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="our-work" id="work">
+      <div class="container">
+        <h2 class="section-title">See the MNOS Difference</h2>
+
+        <p class="section-subtitle">
+          From clean mowing lines to refreshed outdoor spaces, our work is focused on
+          dependable service, clean results, and properties that look cared for.
+        </p>
+
+        <div class="work-grid">
+          <div class="work-photo">
+            <img
+              src="Stripes_1.jpg"
+              alt="Freshly mowed lakeside lawn with clean stripes"
+            />
+          </div>
+
+          <div class="work-photo">
+            <img
+              src="Stripes_2.jpg"
+              alt="Freshly maintained front yard with clean mowing stripes and landscaping"
+            />
+          </div>
+
+          <div class="work-photo">
+            <img
+              src="Stripes_3.jpg"
+              alt="Freshly mowed residential yard with lawn equipment"
+            />
+          </div>
+
+          <div class="work-photo">
+            <img
+              src="Stripes_4.jpg"
+              alt="Freshly mowed backyard with clean lawn stripes"
+            />
           </div>
         </div>
       </div>
@@ -976,6 +1052,7 @@
       <div class="footer-nav">
         <a href="#home">Home</a>
         <a href="#services">Services</a>
+        <a href="#work">Our Work</a>
         <a href="#about">About</a>
         <a href="#team">Team</a>
         <a href="#contact">Contact</a>
