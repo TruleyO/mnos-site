@@ -308,6 +308,75 @@
       font-size: 1.08rem;
     }
 
+    .meet-team {
+      background: linear-gradient(180deg, #f7f9f4 0%, #ffffff 100%);
+    }
+
+    .team-wrap {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .team-copy {
+      background: rgba(255, 255, 255, 0.92);
+      border-left: 6px solid var(--forest);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .team-eyebrow {
+      color: var(--forest-dark);
+      background: rgba(31, 77, 58, 0.08);
+      border-color: rgba(31, 77, 58, 0.14);
+    }
+
+    .team-copy .section-title {
+      margin-bottom: 14px;
+    }
+
+    .team-copy p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .team-copy .team-highlight {
+      color: var(--forest-dark);
+      font-weight: 800;
+      font-size: 1.08rem;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    .team-photo-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .team-photo {
+      overflow: hidden;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: var(--white);
+    }
+
+    .team-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .team-photo-main img {
+      min-height: 330px;
+    }
+
+    .team-photo-support img {
+      min-height: 260px;
+    }
+
     .about-wrap {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
@@ -444,6 +513,7 @@
       }
 
       .about-wrap,
+      .team-wrap,
       .why-grid,
       .contact-grid {
         grid-template-columns: 1fr;
@@ -525,11 +595,22 @@
       .process-grid,
       .why-grid,
       .about-wrap,
+      .team-wrap,
       .contact-grid {
         grid-template-columns: 1fr;
       }
 
       .about-image img {
+        min-height: auto;
+        height: auto;
+      }
+
+      .team-copy {
+        padding: 24px;
+      }
+
+      .team-photo-main img,
+      .team-photo-support img {
         min-height: auto;
         height: auto;
       }
@@ -567,6 +648,7 @@
         <a href="#home">Home</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
+        <a href="#team">Team</a>
         <a href="#contact">Contact</a>
         <a class="btn btn-primary" href="#contact">Request a Quote</a>
       </nav>
@@ -704,6 +786,53 @@
       </div>
     </section>
 
+    <section class="meet-team" id="team">
+      <div class="container team-wrap">
+        <div class="team-copy">
+          <span class="eyebrow team-eyebrow">Meet the Team</span>
+
+          <h2 class="section-title">Built on Hard Work, Trust, and Family</h2>
+
+          <p>
+            At Minneapolis North Outdoor Services LLC, our crew shows up ready to work,
+            treats every property with respect, and takes pride in delivering dependable
+            outdoor services through every season.
+          </p>
+
+          <p>
+            MNOS is more than a business. It is built on family, teamwork, and the people
+            who stand beside us while we build something meaningful.
+          </p>
+
+          <p>
+            The women in our lives are a big part of that foundation. They support us,
+            encourage us, and believe in us through the long days, early mornings, and
+            busy seasons. Their strength, patience, and love help make MNOS what it is.
+          </p>
+
+          <p class="team-highlight">
+            Family, teamwork, and dependable service — that’s the MNOS way.
+          </p>
+        </div>
+
+        <div class="team-photo-grid">
+          <div class="team-photo team-photo-main">
+            <img
+              src="MNOS_Team_1.jpg"
+              alt="Minneapolis North Outdoor Services team with equipment on a sunny lawn"
+            />
+          </div>
+
+          <div class="team-photo team-photo-support">
+            <img
+              src="MNOS_team_2.jpg"
+              alt="Minneapolis North Outdoor Services crew standing together outdoors"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="about">
       <div class="container about-wrap">
         <div class="about-copy">
@@ -826,6 +955,7 @@
         <a href="#home">Home</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
+        <a href="#team">Team</a>
         <a href="#contact">Contact</a>
       </div>
     </div>
