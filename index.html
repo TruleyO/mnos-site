@@ -182,6 +182,26 @@
       gap: 14px;
     }
 
+    .trust-strip {
+      background: var(--forest-dark);
+      color: var(--white);
+      padding: 18px 0;
+    }
+
+    .trust-strip-wrap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      text-align: center;
+    }
+
+    .trust-item {
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      color: #f2e6c8;
+    }
+
     section {
       padding: 84px 0;
     }
@@ -620,6 +640,15 @@
         text-align: center;
       }
 
+      .trust-strip-wrap {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .trust-item {
+        font-size: 0.85rem;
+      }
+
       .services-grid,
       .process-grid,
       .work-grid,
@@ -710,6 +739,15 @@
             <a class="btn btn-secondary" href="#services">View Services</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container trust-strip-wrap">
+        <div class="trust-item">Locally Owned</div>
+        <div class="trust-item">Minneapolis Based</div>
+        <div class="trust-item">Residential & Commercial</div>
+        <div class="trust-item">Year-Round Outdoor Services</div>
       </div>
     </section>
 
