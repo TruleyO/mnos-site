@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -337,6 +338,59 @@
       transform: scale(1.03);
     }
 
+    .reviews {
+      background:
+        linear-gradient(rgba(21, 55, 41, 0.90), rgba(21, 55, 41, 0.90)),
+        url("Tree_Sun.png") center/cover no-repeat;
+      color: var(--white);
+    }
+
+    .reviews .section-title {
+      color: var(--white);
+    }
+
+    .reviews .section-subtitle {
+      color: #e5f0ea;
+      font-weight: 600;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .review-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+    }
+
+    .review-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .reviews-note {
+      margin-top: 24px;
+      color: #f2e6c8;
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
     .why {
       background:
         linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
@@ -632,7 +686,8 @@
       .services-grid,
       .serve-grid,
       .process-grid,
-      .work-grid {
+      .work-grid,
+      .reviews-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -728,6 +783,7 @@
       .serve-grid,
       .process-grid,
       .work-grid,
+      .reviews-grid,
       .why-grid,
       .about-wrap,
       .team-wrap,
@@ -742,6 +798,11 @@
 
       .work-photo img {
         height: 280px;
+      }
+
+      .review-card img {
+        min-height: auto;
+        height: auto;
       }
 
       .about-image img {
@@ -776,6 +837,7 @@
       }
     }
   </style>
+
 </head>
 
 <body>
@@ -788,24 +850,28 @@
           class="header-logo"
         />
 
-        <div class="brand">
-          Minneapolis North<br />
-          Outdoor Services LLC
-        </div>
-      </div>
-
-      <nav class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="#serve">Who We Serve</a>
-        <a href="#service-area">Service Area</a>
-        <a href="#work">Our Work</a>
-        <a href="#about">About</a>
-        <a href="#team">Team</a>
-        <a href="#contact">Contact</a>
-        <a class="btn btn-primary" href="#contact">Request a Quote</a>
-      </nav>
+```
+    <div class="brand">
+      Minneapolis North<br />
+      Outdoor Services LLC
     </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#serve">Who We Serve</a>
+    <a href="#service-area">Service Area</a>
+    <a href="#work">Our Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#team">Team</a>
+    <a href="#contact">Contact</a>
+    <a class="btn btn-primary" href="#contact">Request a Quote</a>
+  </nav>
+</div>
+```
+
   </header>
 
   <main>
@@ -814,434 +880,479 @@
         <div class="hero-content">
           <span class="eyebrow">Proudly Serving Minneapolis &amp; Surrounding Areas</span>
 
-          <h1>Minnesota Outdoor Services You Can Count On</h1>
+```
+      <h1>Minnesota Outdoor Services You Can Count On</h1>
 
-          <div class="slogan">Four Seasons, One Trusted Team</div>
+      <div class="slogan">Four Seasons, One Trusted Team</div>
 
-          <p>
-            Professional property care for every season, delivered with reliability,
-            pride, and local experience.
-          </p>
+      <p>
+        Professional property care for every season, delivered with reliability,
+        pride, and local experience.
+      </p>
 
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#contact">Get a Free Quote</a>
-            <a class="btn btn-secondary" href="#services">View Services</a>
-          </div>
-        </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contact">Get a Free Quote</a>
+        <a class="btn btn-secondary" href="#services">View Services</a>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="trust-strip">
-      <div class="container trust-strip-wrap">
-        <div class="trust-item">Minnesota Registered LLC</div>
-        <div class="trust-item">Insured</div>
-        <div class="trust-item">Residential &amp; Commercial</div>
-        <div class="trust-item">Year-Round Outdoor Services</div>
-      </div>
-    </section>
+<section class="trust-strip">
+  <div class="container trust-strip-wrap">
+    <div class="trust-item">Minnesota Registered LLC</div>
+    <div class="trust-item">Insured</div>
+    <div class="trust-item">Residential &amp; Commercial</div>
+    <div class="trust-item">Year-Round Outdoor Services</div>
+  </div>
+</section>
 
-    <section class="intro">
-      <div class="container">
-        <h2 class="section-title">Outdoor Services Built for Minnesota Living</h2>
+<section class="intro">
+  <div class="container">
+    <h2 class="section-title">Outdoor Services Built for Minnesota Living</h2>
 
-        <p class="section-subtitle">
-          Minneapolis North Outdoor Services LLC helps homes and properties stay clean,
-          functional, and well maintained through every season. We believe in honest
-          work, strong communication, and dependable service you can trust.
+    <p class="section-subtitle">
+      Minneapolis North Outdoor Services LLC helps homes and properties stay clean,
+      functional, and well maintained through every season. We believe in honest
+      work, strong communication, and dependable service you can trust.
+    </p>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <h2 class="section-title">Our Services</h2>
+
+    <p class="section-subtitle">
+      Reliable outdoor solutions for homes, businesses, and properties throughout
+      Minneapolis and surrounding communities.
+    </p>
+
+    <div class="services-grid">
+      <div class="card">
+        <h3>Spring &amp; Fall Cleanups</h3>
+        <p>
+          Seasonal cleanup services that remove leaves, sticks, debris, and buildup
+          so your property is ready for the season ahead.
         </p>
       </div>
-    </section>
 
-    <section id="services">
-      <div class="container">
-        <h2 class="section-title">Our Services</h2>
-
-        <p class="section-subtitle">
-          Reliable outdoor solutions for homes, businesses, and properties throughout
-          Minneapolis and surrounding communities.
+      <div class="card">
+        <h3>Lawn Mowing &amp; Yard Care</h3>
+        <p>
+          Dependable mowing, trimming, edging, and routine yard care to keep your
+          property looking clean, sharp, and well maintained.
         </p>
-
-        <div class="services-grid">
-          <div class="card">
-            <h3>Spring &amp; Fall Cleanups</h3>
-            <p>
-              Seasonal cleanup services that remove leaves, sticks, debris, and buildup
-              so your property is ready for the season ahead.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Lawn Mowing &amp; Yard Care</h3>
-            <p>
-              Dependable mowing, trimming, edging, and routine yard care to keep your
-              property looking clean, sharp, and well maintained.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Dethatching &amp; Lawn Recovery</h3>
-            <p>
-              Lawn support services that help remove excess thatch, improve airflow,
-              and give your grass a better chance to grow stronger.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Mulch, Dirt &amp; Landscape Refreshes</h3>
-            <p>
-              Mulch installation, black dirt, edging touch-ups, and practical landscape
-              improvements that help refresh curb appeal.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Commercial Property Maintenance</h3>
-            <p>
-              Professional outdoor maintenance support for businesses, rental properties,
-              apartment communities, HOAs, and commercial spaces.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>Year-Round Property Support</h3>
-            <p>
-              Outdoor service support through Minnesota’s changing seasons, with reliable
-              communication and dependable follow-through.
-            </p>
-          </div>
-        </div>
-
-        <div class="section-action">
-          <a class="btn btn-primary" href="#contact">Request a Quote</a>
-        </div>
       </div>
-    </section>
 
-    <section class="who-we-serve" id="serve">
-      <div class="container">
-        <h2 class="section-title">Who We Serve</h2>
-
-        <p class="section-subtitle">
-          Minneapolis North Outdoor Services LLC provides dependable outdoor service
-          support for residential and commercial properties throughout Minneapolis and
-          surrounding communities.
+      <div class="card">
+        <h3>Dethatching &amp; Lawn Recovery</h3>
+        <p>
+          Lawn support services that help remove excess thatch, improve airflow,
+          and give your grass a better chance to grow stronger.
         </p>
-
-        <div class="serve-grid">
-          <div class="serve-item">Homeowners</div>
-          <div class="serve-item">Rental Properties</div>
-          <div class="serve-item">Small Businesses</div>
-          <div class="serve-item">Commercial Properties</div>
-          <div class="serve-item">Townhomes &amp; HOAs</div>
-          <div class="serve-item">Property Managers</div>
-        </div>
       </div>
-    </section>
 
-    <section class="service-area" id="service-area">
-      <div class="container">
-        <h2 class="section-title">Service Area</h2>
-
-        <p class="section-subtitle">
-          Minneapolis North Outdoor Services LLC proudly provides outdoor services
-          throughout Minneapolis and surrounding communities. If you are nearby and need
-          dependable property care, reach out and we’ll let you know how we can help.
+      <div class="card">
+        <h3>Mulch, Dirt &amp; Landscape Refreshes</h3>
+        <p>
+          Mulch installation, black dirt, edging touch-ups, and practical landscape
+          improvements that help refresh curb appeal.
         </p>
-
-        <div class="serve-grid">
-          <div class="serve-item">Minneapolis</div>
-          <div class="serve-item">Brooklyn Park</div>
-          <div class="serve-item">Plymouth</div>
-          <div class="serve-item">Maple Grove</div>
-          <div class="serve-item">Golden Valley</div>
-          <div class="serve-item">Surrounding Communities</div>
-        </div>
       </div>
-    </section>
 
-    <section class="our-work" id="work">
-      <div class="container">
-        <h2 class="section-title">See the MNOS Difference</h2>
-
-        <p class="section-subtitle">
-          From clean mowing lines to refreshed outdoor spaces, our work is focused on
-          dependable service, clean results, and properties that look cared for.
+      <div class="card">
+        <h3>Commercial Property Maintenance</h3>
+        <p>
+          Professional outdoor maintenance support for businesses, rental properties,
+          apartment communities, HOAs, and commercial spaces.
         </p>
-
-        <div class="work-grid">
-          <div class="work-photo">
-            <img
-              src="Stripes_1.jpg"
-              alt="Freshly mowed lakeside lawn with clean stripes"
-            />
-          </div>
-
-          <div class="work-photo">
-            <img
-              src="Stripes_2.jpg"
-              alt="Freshly maintained front yard with clean mowing stripes and landscaping"
-            />
-          </div>
-
-          <div class="work-photo">
-            <img
-              src="Stripes_3.jpg"
-              alt="Freshly mowed residential yard with lawn equipment"
-            />
-          </div>
-
-          <div class="work-photo">
-            <img
-              src="Stripes_4.jpg"
-              alt="Freshly mowed backyard with clean lawn stripes"
-            />
-          </div>
-        </div>
-
-        <div class="section-action">
-          <a class="btn btn-primary" href="#contact">Like What You See? Request a Quote</a>
-        </div>
       </div>
-    </section>
 
-    <section class="why">
-      <div class="container">
-        <h2 class="section-title">Why Choose Minneapolis North Outdoor Services</h2>
-
-        <p class="section-subtitle">
-          We know property owners want more than someone who shows up. They want
-          professionalism, consistency, and results they can rely on.
+      <div class="card">
+        <h3>Year-Round Property Support</h3>
+        <p>
+          Outdoor service support through Minnesota’s changing seasons, with reliable
+          communication and dependable follow-through.
         </p>
-
-        <div class="why-grid">
-          <div class="feature">
-            <h3>Four Seasons of Experience</h3>
-            <p>
-              We understand the changing demands Minnesota weather places on homes,
-              yards, and outdoor spaces.
-            </p>
-          </div>
-
-          <div class="feature">
-            <h3>Dependable Service</h3>
-            <p>
-              We show up, communicate clearly, and take pride in doing the job right
-              the first time.
-            </p>
-          </div>
-
-          <div class="feature">
-            <h3>Clean, Professional Results</h3>
-            <p>
-              Our work is focused on making your property look better, function better,
-              and stay maintained.
-            </p>
-          </div>
-
-          <div class="feature">
-            <h3>A Team You Can Trust</h3>
-            <p>
-              We believe trust is earned through consistency, respect, and quality
-              workmanship.
-            </p>
-          </div>
-        </div>
       </div>
-    </section>
+    </div>
 
-    <section class="banner">
-      <div class="container">
-        <h2>Four Seasons, One Trusted Team</h2>
-        <p>Reliable outdoor service with Minnesota pride.</p>
+    <div class="section-action">
+      <a class="btn btn-primary" href="#contact">Request a Quote</a>
+    </div>
+  </div>
+</section>
+
+<section class="who-we-serve" id="serve">
+  <div class="container">
+    <h2 class="section-title">Who We Serve</h2>
+
+    <p class="section-subtitle">
+      Minneapolis North Outdoor Services LLC provides dependable outdoor service
+      support for residential and commercial properties throughout Minneapolis and
+      surrounding communities.
+    </p>
+
+    <div class="serve-grid">
+      <div class="serve-item">Homeowners</div>
+      <div class="serve-item">Rental Properties</div>
+      <div class="serve-item">Small Businesses</div>
+      <div class="serve-item">Commercial Properties</div>
+      <div class="serve-item">Townhomes &amp; HOAs</div>
+      <div class="serve-item">Property Managers</div>
+    </div>
+  </div>
+</section>
+
+<section class="service-area" id="service-area">
+  <div class="container">
+    <h2 class="section-title">Service Area</h2>
+
+    <p class="section-subtitle">
+      Minneapolis North Outdoor Services LLC proudly provides outdoor services
+      throughout Minneapolis and surrounding communities. If you are nearby and need
+      dependable property care, reach out and we’ll let you know how we can help.
+    </p>
+
+    <div class="serve-grid">
+      <div class="serve-item">Minneapolis</div>
+      <div class="serve-item">Brooklyn Park</div>
+      <div class="serve-item">Plymouth</div>
+      <div class="serve-item">Maple Grove</div>
+      <div class="serve-item">Golden Valley</div>
+      <div class="serve-item">Surrounding Communities</div>
+    </div>
+  </div>
+</section>
+
+<section class="our-work" id="work">
+  <div class="container">
+    <h2 class="section-title">See the MNOS Difference</h2>
+
+    <p class="section-subtitle">
+      From clean mowing lines to refreshed outdoor spaces, our work is focused on
+      dependable service, clean results, and properties that look cared for.
+    </p>
+
+    <div class="work-grid">
+      <div class="work-photo">
+        <img
+          src="Stripes_1.jpg"
+          alt="Freshly mowed lakeside lawn with clean stripes"
+        />
       </div>
-    </section>
 
-    <section id="about">
-      <div class="container about-wrap">
-        <div class="about-copy">
-          <h2 class="section-title">Built on Hard Work. Rooted in Minnesota.</h2>
-
-          <p>
-            Minneapolis North Outdoor Services LLC was founded by Dominique and Truley,
-            who bring more than 30 years of combined outdoor service experience to the
-            company. After years of hands-on outdoor service experience, they built MNOS
-            to bring dependable, professional property care to Minneapolis and the
-            surrounding communities.
-          </p>
-
-          <p>
-            Minneapolis North Outdoor Services LLC is a Minnesota registered and insured
-            outdoor service company serving Minneapolis and surrounding communities.
-          </p>
-
-          <p>
-            Our goal is simple: deliver trusted outdoor services that help homes and
-            properties look their best in every season.
-          </p>
-
-          <a class="btn btn-primary" href="#contact">Request a Quote</a>
-        </div>
-
-        <div class="about-image">
-          <img src="Four_seasons Website.jpg" alt="Four seasons outdoor services collage" />
-        </div>
+      <div class="work-photo">
+        <img
+          src="Stripes_2.jpg"
+          alt="Freshly maintained front yard with clean mowing stripes and landscaping"
+        />
       </div>
-    </section>
 
-    <section class="meet-team" id="team">
-      <div class="container team-wrap">
-        <div class="team-copy">
-          <span class="eyebrow team-eyebrow">Meet the Team</span>
-
-          <h2 class="section-title">Built on Hard Work, Trust, and Family</h2>
-
-          <p>
-            At Minneapolis North Outdoor Services LLC, our crew is the heart of what we do.
-            Every member of the team brings hard work, pride, and dedication to each
-            property we service. We show up ready to work, treat every yard and outdoor
-            space with respect, and take pride in delivering dependable results through
-            every season.
-          </p>
-
-          <p>
-            MNOS is more than a business. It is built on teamwork, trust, family, and the
-            people who believe in what we are building. Our crew members help carry that
-            standard forward every day through their effort, attitude, and commitment to
-            doing the job right.
-          </p>
-
-          <p>
-            We also want to recognize the women in our lives, who are a big part of our
-            foundation. They support us, encourage us, and stand beside us through the
-            long days, early mornings, and busy seasons. Their strength, patience, and
-            belief help make MNOS what it is.
-          </p>
-
-          <p>
-            From the people behind the scenes to the crew on the ground, MNOS is built by
-            people who care about showing up, working hard, and doing the job right.
-          </p>
-
-          <p class="team-highlight">
-            Family, teamwork, and dependable service — that’s the MNOS way.
-          </p>
-        </div>
-
-        <div class="team-photo-grid">
-          <div class="team-photo team-photo-main">
-            <img
-              src="MNOS_Team_1_no_logo_full_crew_left_trim.jpg"
-              alt="Minneapolis North Outdoor Services crew standing with lawn equipment"
-            />
-          </div>
-
-          <div class="team-photo team-photo-support">
-            <img
-              src="MNOS_team_2_no_logo_bottom_cropped.jpg"
-              alt="Minneapolis North Outdoor Services crew standing together outdoors"
-            />
-          </div>
-
-          <div class="team-photo team-photo-action captioned-photo">
-            <img
-              src="Shawn_Dom.jpg"
-              alt="Minneapolis North Outdoor Services crew members Shawn and Dom on a lawn with outdoor service equipment"
-            />
-            <div class="photo-caption">
-              <strong>Shawn and Dom on the job</strong>
-              <span>MNOS crew members bringing hard work and dependable service to every property.</span>
-            </div>
-          </div>
-        </div>
+      <div class="work-photo">
+        <img
+          src="Stripes_3.jpg"
+          alt="Freshly mowed residential yard with lawn equipment"
+        />
       </div>
-    </section>
 
-    <section>
-      <div class="container">
-        <h2 class="section-title">How It Works</h2>
+      <div class="work-photo">
+        <img
+          src="Stripes_4.jpg"
+          alt="Freshly mowed backyard with clean lawn stripes"
+        />
+      </div>
+    </div>
 
-        <p class="section-subtitle">
-          A simple process built around clear communication and dependable follow-through.
+    <div class="section-action">
+      <a class="btn btn-primary" href="#contact">Like What You See? Request a Quote</a>
+    </div>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <div class="container">
+    <h2 class="section-title">What Our Clients Are Saying</h2>
+
+    <p class="section-subtitle">
+      Real feedback from local customers who trusted Minneapolis North Outdoor
+      Services LLC with their lawn care and outdoor property needs.
+    </p>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <img
+          src="review-ubah-minneapolis.png"
+          alt="Five-star customer review from Ubah in Minneapolis, MN for Minneapolis North Outdoor Services LLC"
+        />
+      </div>
+
+      <div class="review-card">
+        <img
+          src="review-elizabeth-minneapolis.jpg"
+          alt="Five-star customer review from Elizabeth in Minneapolis, MN for Minneapolis North Outdoor Services LLC"
+        />
+      </div>
+
+      <div class="review-card">
+        <img
+          src="review-christopher-rogers.jpg"
+          alt="Five-star customer review from Christopher in Rogers, MN for Minneapolis North Outdoor Services LLC"
+        />
+      </div>
+    </div>
+
+    <p class="reviews-note">
+      We appreciate every customer who takes the time to share their experience with MNOS.
+    </p>
+
+    <div class="section-action">
+      <a class="btn btn-primary" href="#contact">Request Your Quote</a>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="container">
+    <h2 class="section-title">Why Choose Minneapolis North Outdoor Services</h2>
+
+    <p class="section-subtitle">
+      We know property owners want more than someone who shows up. They want
+      professionalism, consistency, and results they can rely on.
+    </p>
+
+    <div class="why-grid">
+      <div class="feature">
+        <h3>Four Seasons of Experience</h3>
+        <p>
+          We understand the changing demands Minnesota weather places on homes,
+          yards, and outdoor spaces.
         </p>
-
-        <div class="process-grid">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h3>Reach Out</h3>
-            <p>Tell us about your property and the outdoor services you need.</p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">2</div>
-            <h3>Get a Quote</h3>
-            <p>We review the details and provide straightforward next steps.</p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">3</div>
-            <h3>Schedule Service</h3>
-            <p>Choose a time that works for your property and your schedule.</p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">4</div>
-            <h3>Enjoy the Results</h3>
-            <p>Count on dependable work and a cleaner, better-maintained property.</p>
-          </div>
-        </div>
       </div>
-    </section>
 
-    <section class="cta" id="contact">
-      <div class="container">
-        <h2 class="section-title">Ready to Get Your Property Cleaned Up?</h2>
-
-        <p class="section-subtitle">
-          Whether you need a seasonal cleanup, lawn care, landscape refresh, or year-round
-          property support, Minneapolis North Outdoor Services LLC is ready to help.
+      <div class="feature">
+        <h3>Dependable Service</h3>
+        <p>
+          We show up, communicate clearly, and take pride in doing the job right
+          the first time.
         </p>
+      </div>
 
-        <div class="contact-box">
-          <h3>Request a Quote</h3>
+      <div class="feature">
+        <h3>Clean, Professional Results</h3>
+        <p>
+          Our work is focused on making your property look better, function better,
+          and stay maintained.
+        </p>
+      </div>
 
-          <p class="contact-box-intro">
-            Send us a message with the service you need, your property location, and any
-            details or photos that help show the job. We’ll follow up with the next steps.
-          </p>
+      <div class="feature">
+        <h3>A Team You Can Trust</h3>
+        <p>
+          We believe trust is earned through consistency, respect, and quality
+          workmanship.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
-          <div class="contact-grid">
-            <div class="contact-item">
-              <strong>Phone</strong>
-              <span>(763) 333-9004</span>
-            </div>
+<section class="banner">
+  <div class="container">
+    <h2>Four Seasons, One Trusted Team</h2>
+    <p>Reliable outdoor service with Minnesota pride.</p>
+  </div>
+</section>
 
-            <div class="contact-item">
-              <strong>Email</strong>
-              <span>contact@mplsnorth.com</span>
-            </div>
+<section id="about">
+  <div class="container about-wrap">
+    <div class="about-copy">
+      <h2 class="section-title">Built on Hard Work. Rooted in Minnesota.</h2>
 
-            <div class="contact-item">
-              <strong>Service Area</strong>
-              <span>Minneapolis and surrounding communities</span>
-            </div>
+      <p>
+        Minneapolis North Outdoor Services LLC was founded by Dominique and Truley,
+        who bring more than 30 years of combined outdoor service experience to the
+        company. After years of hands-on outdoor service experience, they built MNOS
+        to bring dependable, professional property care to Minneapolis and the
+        surrounding communities.
+      </p>
 
-            <div class="contact-item">
-              <strong>Best Info to Include</strong>
-              <span>Service needed, address, timeline, and photos if available</span>
-            </div>
-          </div>
+      <p>
+        Minneapolis North Outdoor Services LLC is a Minnesota registered and insured
+        outdoor service company serving Minneapolis and surrounding communities.
+      </p>
 
-          <div class="contact-button-wrap">
-            <a
-              class="btn btn-primary"
-              href="mailto:contact@mplsnorth.com?subject=Quote%20Request%20-%20Minneapolis%20North%20Outdoor%20Services&body=Hello%20MNOS%2C%0A%0AI%20would%20like%20to%20request%20a%20quote.%0A%0AService%20needed%3A%0AProperty%20address%2Flocation%3A%0ATimeline%3A%0AAdditional%20details%3A%0A%0AThank%20you."
-            >
-              Start Your Quote Request
-            </a>
-          </div>
+      <p>
+        Our goal is simple: deliver trusted outdoor services that help homes and
+        properties look their best in every season.
+      </p>
+
+      <a class="btn btn-primary" href="#contact">Request a Quote</a>
+    </div>
+
+    <div class="about-image">
+      <img src="Four_seasons Website.jpg" alt="Four seasons outdoor services collage" />
+    </div>
+  </div>
+</section>
+
+<section class="meet-team" id="team">
+  <div class="container team-wrap">
+    <div class="team-copy">
+      <span class="eyebrow team-eyebrow">Meet the Team</span>
+
+      <h2 class="section-title">Built on Hard Work, Trust, and Family</h2>
+
+      <p>
+        At Minneapolis North Outdoor Services LLC, our crew is the heart of what we do.
+        Every member of the team brings hard work, pride, and dedication to each
+        property we service. We show up ready to work, treat every yard and outdoor
+        space with respect, and take pride in delivering dependable results through
+        every season.
+      </p>
+
+      <p>
+        MNOS is more than a business. It is built on teamwork, trust, family, and the
+        people who believe in what we are building. Our crew members help carry that
+        standard forward every day through their effort, attitude, and commitment to
+        doing the job right.
+      </p>
+
+      <p>
+        We also want to recognize the women in our lives, who are a big part of our
+        foundation. They support us, encourage us, and stand beside us through the
+        long days, early mornings, and busy seasons. Their strength, patience, and
+        belief help make MNOS what it is.
+      </p>
+
+      <p>
+        From the people behind the scenes to the crew on the ground, MNOS is built by
+        people who care about showing up, working hard, and doing the job right.
+      </p>
+
+      <p class="team-highlight">
+        Family, teamwork, and dependable service — that’s the MNOS way.
+      </p>
+    </div>
+
+    <div class="team-photo-grid">
+      <div class="team-photo team-photo-main">
+        <img
+          src="MNOS_Team_1_no_logo_full_crew_left_trim.jpg"
+          alt="Minneapolis North Outdoor Services crew standing with lawn equipment"
+        />
+      </div>
+
+      <div class="team-photo team-photo-support">
+        <img
+          src="MNOS_team_2_no_logo_bottom_cropped.jpg"
+          alt="Minneapolis North Outdoor Services crew standing together outdoors"
+        />
+      </div>
+
+      <div class="team-photo team-photo-action captioned-photo">
+        <img
+          src="Shawn_Dom.jpg"
+          alt="Minneapolis North Outdoor Services crew members Shawn and Dom on a lawn with outdoor service equipment"
+        />
+        <div class="photo-caption">
+          <strong>Shawn and Dom on the job</strong>
+          <span>MNOS crew members bringing hard work and dependable service to every property.</span>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+
+    <p class="section-subtitle">
+      A simple process built around clear communication and dependable follow-through.
+    </p>
+
+    <div class="process-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Reach Out</h3>
+        <p>Tell us about your property and the outdoor services you need.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Get a Quote</h3>
+        <p>We review the details and provide straightforward next steps.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Schedule Service</h3>
+        <p>Choose a time that works for your property and your schedule.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Enjoy the Results</h3>
+        <p>Count on dependable work and a cleaner, better-maintained property.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="container">
+    <h2 class="section-title">Ready to Get Your Property Cleaned Up?</h2>
+
+    <p class="section-subtitle">
+      Whether you need a seasonal cleanup, lawn care, landscape refresh, or year-round
+      property support, Minneapolis North Outdoor Services LLC is ready to help.
+    </p>
+
+    <div class="contact-box">
+      <h3>Request a Quote</h3>
+
+      <p class="contact-box-intro">
+        Send us a message with the service you need, your property location, and any
+        details or photos that help show the job. We’ll follow up with the next steps.
+      </p>
+
+      <div class="contact-grid">
+        <div class="contact-item">
+          <strong>Phone</strong>
+          <span>(763) 333-9004</span>
+        </div>
+
+        <div class="contact-item">
+          <strong>Email</strong>
+          <span>contact@mplsnorth.com</span>
+        </div>
+
+        <div class="contact-item">
+          <strong>Service Area</strong>
+          <span>Minneapolis and surrounding communities</span>
+        </div>
+
+        <div class="contact-item">
+          <strong>Best Info to Include</strong>
+          <span>Service needed, address, timeline, and photos if available</span>
+        </div>
+      </div>
+
+      <div class="contact-button-wrap">
+        <a
+          class="btn btn-primary"
+          href="mailto:contact@mplsnorth.com?subject=Quote%20Request%20-%20Minneapolis%20North%20Outdoor%20Services&body=Hello%20MNOS%2C%0A%0AI%20would%20like%20to%20request%20a%20quote.%0A%0AService%20needed%3A%0AProperty%20address%2Flocation%3A%0ATimeline%3A%0AAdditional%20details%3A%0A%0AThank%20you."
+        >
+          Start Your Quote Request
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
   </main>
 
   <footer>
@@ -1251,17 +1362,22 @@
         <p>Four Seasons, One Trusted Team</p>
       </div>
 
-      <div class="footer-nav">
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="#serve">Who We Serve</a>
-        <a href="#service-area">Service Area</a>
-        <a href="#work">Our Work</a>
-        <a href="#about">About</a>
-        <a href="#team">Team</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
+```
+  <div class="footer-nav">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#serve">Who We Serve</a>
+    <a href="#service-area">Service Area</a>
+    <a href="#work">Our Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+    <a href="#team">Team</a>
+    <a href="#contact">Contact</a>
+  </div>
+</div>
+```
+
   </footer>
 </body>
 </html>
+
