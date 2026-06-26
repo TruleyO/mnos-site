@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Punch Clock - Minneapolis North Outdoor Services LLC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7f4;
+      color: #15221b;
+    }
+
+    main {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .mark {
+      width: 76px;
+      height: 76px;
+      border-radius: 18px;
+      background: #0f3d2b;
+      color: white;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 12px;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    p {
+      line-height: 1.45;
+      color: #52645b;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #d9e0da;
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 14px;
+      box-shadow: 0 10px 28px rgba(20, 35, 28, 0.08);
+    }
+
+    .status {
+      background: #eef5f1;
+      border: 1px solid #cfe1d7;
+      border-radius: 8px;
+      padding: 12px;
+      color: #173d2c;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #52645b;
+    }
+
+    input {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid #bac8c0;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #1f6f55;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    button.secondary {
+      background: white;
+      color: #15221b;
+      border: 1px solid #bac8c0;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+    }
+
+    .small {
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="brand">
+      <div class="mark">MN</div>
+      <h1>Employee Punch Clock</h1>
+      <p>Minneapolis North Outdoor Services LLC</p>
+    </section>
+
+    <section class="card">
+      <div class="status">The mobile punch link is online. Cloud saving is the next setup step.</div>
+      <p class="small">This page confirms the phone link works from the website. Next we will connect it to a secure cloud database so employee punches save back to the office app.</p>
+    </section>
+
+    <section class="card">
+      <h2>Location Check</h2>
+      <p class="small">Use this to confirm the phone can ask for GPS permission at the jobsite or shop.</p>
+      <button id="locationButton" class="secondary" type="button">Check Phone Location</button>
+      <p id="locationResult" class="small"></p>
+    </section>
+
+    <section class="card">
+      <h2>Punch In / Out</h2>
+      <label>
+        Employee PIN
+        <input disabled placeholder="Cloud connection needed first">
+      </label>
+      <button disabled type="button">Punch Clock Coming Next</button>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("locationButton").addEventListener("click", function () {
+      var result = document.getElementById("locationResult");
+      result.textContent = "Checking location...";
+
+      if (!navigator.geolocation) {
+        result.textContent = "This phone browser does not support location checks.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          result.textContent =
+            "Location works: " +
+            position.coords.latitude.toFixed(6) +
+            ", " +
+            position.coords.longitude.toFixed(6);
+        },
+        function () {
+          result.textContent = "Location permission was blocked or unavailable.";
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 12000,
+          maximumAge: 30000
+        }
+      );
+    });
+  </script>
+</body>
+</html>
