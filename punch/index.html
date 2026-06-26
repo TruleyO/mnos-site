@@ -5,104 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Employee Punch Clock - Minneapolis North Outdoor Services LLC</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7f4;
-      color: #15221b;
-    }
-
-    main {
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 24px 16px;
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .logo {
-      width: 150px;
-      height: 150px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 12px;
-    }
-
-    h1 {
-      font-size: 28px;
-      margin: 0 0 8px;
-    }
-
-    p {
-      line-height: 1.45;
-      color: #52645b;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #d9e0da;
-      border-radius: 10px;
-      padding: 18px;
-      margin-top: 14px;
-      box-shadow: 0 10px 28px rgba(20, 35, 28, 0.08);
-    }
-
-    .status {
-      background: #eef5f1;
-      border: 1px solid #cfe1d7;
-      border-radius: 8px;
-      padding: 12px;
-      color: #173d2c;
-      font-weight: 700;
-    }
-
-    label {
-      display: block;
-      margin-top: 14px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #52645b;
-    }
-
-    input {
-      width: 100%;
-      min-height: 46px;
-      margin-top: 6px;
-      padding: 10px 12px;
-      border: 1px solid #bac8c0;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      min-height: 48px;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #1f6f55;
-      color: white;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    button.secondary {
-      background: white;
-      color: #15221b;
-      border: 1px solid #bac8c0;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-    }
-
-    .small {
-      font-size: 13px;
-    }
+    body{margin:0;font-family:Arial,sans-serif;background:#f5f7f4;color:#15221b}
+    main{max-width:520px;margin:0 auto;padding:24px 16px}
+    .brand{text-align:center;margin-bottom:20px}
+    .logo{width:150px;height:150px;object-fit:contain;display:block;margin:0 auto 12px}
+    h1{font-size:28px;margin:0 0 8px} h2{font-size:20px;margin:0 0 10px}
+    p{line-height:1.45;color:#52645b}
+    .card{background:white;border:1px solid #d9e0da;border-radius:10px;padding:18px;margin-top:14px;box-shadow:0 10px 28px rgba(20,35,28,.08)}
+    .status{background:#eef5f1;border:1px solid #cfe1d7;border-radius:8px;padding:12px;color:#173d2c;font-weight:700}
+    .bad{background:#fae8e8;border-color:#efc4c4;color:#9a2d2d}
+    label{display:block;margin-top:14px;font-size:13px;font-weight:700;color:#52645b}
+    input{width:100%;min-height:46px;margin-top:6px;padding:10px 12px;border:1px solid #bac8c0;border-radius:8px;font-size:16px;box-sizing:border-box}
+    button{width:100%;min-height:48px;margin-top:14px;border:0;border-radius:8px;background:#1f6f55;color:white;font-size:16px;font-weight:800}
+    button.secondary{background:white;color:#15221b;border:1px solid #bac8c0}
+    button.danger{background:#a53b3b}
+    button:disabled{opacity:.55}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .small{font-size:13px}
   </style>
 </head>
 <body>
@@ -114,55 +33,125 @@
     </section>
 
     <section class="card">
-      <div class="status">The mobile punch link is online. Cloud saving is the next setup step.</div>
-      <p class="small">This page confirms the phone link works from the website. Next we will connect it to a secure cloud database so employee punches save back to the office app.</p>
+      <div id="saveStatus" class="status">Cloud punch clock is ready. Check location before punching.</div>
+      <p class="small">Punches are saved to the company cloud database with GPS location.</p>
+    </section>
+
+    <section class="card">
+      <h2>Employee</h2>
+      <label>Employee name<input id="employeeName" placeholder="Full name"></label>
+      <label>Employee PIN<input id="employeePin" inputmode="numeric" placeholder="PIN"></label>
+      <label>Job / notes<input id="jobNotes" placeholder="Shop, customer, or job notes"></label>
     </section>
 
     <section class="card">
       <h2>Location Check</h2>
-      <p class="small">Use this to confirm the phone can ask for GPS permission at the jobsite or shop.</p>
       <button id="locationButton" class="secondary" type="button">Check Phone Location</button>
       <p id="locationResult" class="small"></p>
     </section>
 
     <section class="card">
       <h2>Punch In / Out</h2>
-      <label>
-        Employee PIN
-        <input disabled placeholder="Cloud connection needed first">
-      </label>
-      <button disabled type="button">Punch Clock Coming Next</button>
+      <div class="row">
+        <button id="punchInButton" type="button" disabled>Punch In</button>
+        <button id="punchOutButton" class="danger" type="button" disabled>Punch Out</button>
+      </div>
     </section>
   </main>
 
-  <script>
-    document.getElementById("locationButton").addEventListener("click", function () {
-      var result = document.getElementById("locationResult");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBt7Z22ZfAVBBKNq80WKqjpseFMW1R0u2A",
+      authDomain: "minneapolis-north-punch-clock.firebaseapp.com",
+      projectId: "minneapolis-north-punch-clock",
+      storageBucket: "minneapolis-north-punch-clock.firebasestorage.app",
+      messagingSenderId: "452658831594",
+      appId: "1:452658831594:web:86b8b76c52ce58c18ff793"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let currentPosition = null;
+
+    function getValue(id){ return document.getElementById(id).value.trim(); }
+
+    function setStatus(message, isBad){
+      const status = document.getElementById("saveStatus");
+      status.textContent = message;
+      status.className = isBad ? "status bad" : "status";
+    }
+
+    function updateButtons(){
+      document.getElementById("punchInButton").disabled = !currentPosition;
+      document.getElementById("punchOutButton").disabled = !currentPosition;
+    }
+
+    document.getElementById("locationButton").addEventListener("click", function(){
+      const result = document.getElementById("locationResult");
       result.textContent = "Checking location...";
 
-      if (!navigator.geolocation) {
-        result.textContent = "This phone browser does not support location checks.";
+      navigator.geolocation.getCurrentPosition(function(position){
+        currentPosition = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracyMeters: position.coords.accuracy || null
+        };
+
+        result.textContent = "Location works: " + currentPosition.latitude.toFixed(6) + ", " + currentPosition.longitude.toFixed(6);
+        setStatus("Location confirmed. You can punch in or out now.", false);
+        updateButtons();
+      }, function(){
+        currentPosition = null;
+        updateButtons();
+        result.textContent = "Location permission was blocked or unavailable.";
+        setStatus("Location permission is required before punching.", true);
+      }, { enableHighAccuracy:true, timeout:12000, maximumAge:30000 });
+    });
+
+    async function savePunch(action){
+      const employeeName = getValue("employeeName");
+      const employeePin = getValue("employeePin");
+      const jobNotes = getValue("jobNotes");
+
+      if(!employeeName || !employeePin){
+        setStatus("Enter employee name and PIN first.", true);
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          result.textContent =
-            "Location works: " +
-            position.coords.latitude.toFixed(6) +
-            ", " +
-            position.coords.longitude.toFixed(6);
-        },
-        function () {
-          result.textContent = "Location permission was blocked or unavailable.";
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 12000,
-          maximumAge: 30000
-        }
-      );
-    });
+      if(!currentPosition){
+        setStatus("Check phone location before punching.", true);
+        return;
+      }
+
+      setStatus("Saving punch...", false);
+
+      try{
+        await addDoc(collection(db, "timePunchEvents"), {
+          company: "Minneapolis North Outdoor Services LLC",
+          action: action,
+          employeeName: employeeName,
+          employeePin: employeePin,
+          jobNotes: jobNotes,
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
+          accuracyMeters: currentPosition.accuracyMeters,
+          localTime: new Date().toLocaleString(),
+          createdAtIso: new Date().toISOString(),
+          createdAt: serverTimestamp(),
+          source: "mobile-punch-page"
+        });
+
+        setStatus(action === "in" ? "Punch in saved." : "Punch out saved.", false);
+      } catch(error){
+        setStatus("Punch did not save. Check Firebase setup and try again.", true);
+      }
+    }
+
+    document.getElementById("punchInButton").addEventListener("click", function(){ savePunch("in"); });
+    document.getElementById("punchOutButton").addEventListener("click", function(){ savePunch("out"); });
   </script>
 </body>
 </html>
