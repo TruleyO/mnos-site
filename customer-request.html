@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Request Service - Minneapolis North Outdoor Services LLC</title>
+    <link rel="icon" href="Logo_Transparent.jpg" />
+    <style>
+      :root { --ink:#16201c; --muted:#64716b; --green:#1f6f55; --line:#d9ded8; --bg:#f5f6f3; --danger:#b04444; }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100vh; background:linear-gradient(rgba(245,246,243,.10), rgba(245,246,243,.10)), url("mower_wheel.jpg") center / cover fixed no-repeat; color:var(--ink); font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      main { width:min(680px, 100%); margin:0 auto; padding:18px; }
+      .card { margin-top:14px; padding:16px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.96); box-shadow:0 12px 36px rgba(20,37,31,.12); }
+      .logo { width:92px; height:92px; object-fit:contain; display:block; margin:4px auto 10px; }
+      h1 { margin:0; font-size:27px; text-align:center; }
+      p { color:var(--muted); line-height:1.45; }
+      label { display:grid; gap:6px; margin-bottom:12px; color:var(--muted); font-size:13px; font-weight:800; }
+      input, select, textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid #bdc8bf; border-radius:8px; font:inherit; color:var(--ink); background:#fff; }
+      textarea { min-height:120px; resize:vertical; }
+      button { width:100%; min-height:50px; border:1px solid var(--green); border-radius:8px; color:#fff; background:var(--green); font:inherit; font-weight:900; }
+      button:disabled { opacity:.65; cursor:not-allowed; }
+      .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .status { margin-top:12px; padding:12px; border-radius:8px; background:#eef3ef; }
+      .danger { color:var(--danger); }
+      .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+      @media (max-width:560px) { .row { grid-template-columns:1fr; } main { padding:12px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <img class="logo" src="Logo_Transparent.jpg" alt="Minneapolis North Outdoor Services LLC" />
+        <h1>Request Service</h1>
+        <p style="text-align:center;">Send a quote request or contact request to Minneapolis North Outdoor Services LLC.</p>
+      </section>
+      <section class="card">
+        <form id="requestForm">
+          <label>Request Type
+            <select id="requestType">
+              <option value="bid">Request a Quote</option>
+              <option value="contact">Contact Me</option>
+            </select>
+          </label>
+          <div class="row">
+            <label>Full Name<input id="nameInput" type="text" autocomplete="name" required></label>
+            <label>Phone<input id="phoneInput" type="tel" autocomplete="tel"></label>
+          </div>
+          <label>Email<input id="emailInput" type="email" autocomplete="email"></label>
+          <label>Service Address<input id="addressInput" type="text" autocomplete="street-address"></label>
+          <div class="row">
+            <label>City<input id="cityInput" type="text" autocomplete="address-level2"></label>
+            <label>ZIP<input id="zipInput" type="text" autocomplete="postal-code"></label>
+          </div>
+          <div class="row">
+            <label>Service Needed
+              <select id="serviceInput">
+                <option value="Lawn care">Lawn care</option>
+                <option value="Cleanup">Cleanup</option>
+                <option value="Mulch or landscaping">Mulch or landscaping</option>
+                <option value="Pressure washing">Pressure washing</option>
+                <option value="Snow or seasonal service">Snow or seasonal service</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+            <label>Timeline
+              <select id="timelineInput">
+                <option value="As soon as possible">As soon as possible</option>
+                <option value="This week">This week</option>
+                <option value="This month">This month</option>
+                <option value="Planning ahead">Planning ahead</option>
+              </select>
+            </label>
+          </div>
+          <label>Preferred Contact
+            <select id="preferredContactInput">
+              <option value="Phone">Phone</option>
+              <option value="Text">Text</option>
+              <option value="Email">Email</option>
+            </select>
+          </label>
+          <label>Message<textarea id="messageInput" placeholder="Tell us what you need help with."></textarea></label>
+          <label class="hp">Company Website<input id="companyWebsiteInput" type="text" autocomplete="off"></label>
+          <button id="submitButton" type="submit">Send Request</button>
+          <div id="status" class="status" hidden></div>
+        </form>
+      </section>
+    </main>
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var projectId = params.get('projectId') || window.MNOS_FIREBASE_PROJECT_ID || 'minneapolis-north-punch-clock';
+        var apiKey = params.get('apiKey') || window.MNOS_FIREBASE_API_KEY || 'AIzaSyBSJPo1BUfJD5JWsSz1EYKSVg5KRHGLPb4';
+        var status = document.getElementById('status');
+        var button = document.getElementById('submitButton');
+
+        function showStatus(message, danger) {
+          status.hidden = false;
+          status.classList.toggle('danger', !!danger);
+          status.textContent = message;
+        }
+
+        function field(value) {
+          return { stringValue: String(value || '').trim() };
+        }
+
+        function firestoreFields(payload) {
+          var fields = {};
+          Object.keys(payload).forEach(function (key) {
+            if (key === 'createdAtIso') fields[key] = { timestampValue: payload[key] };
+            else fields[key] = field(payload[key]);
+          });
+          return fields;
+        }
+
+        async function anonymousToken() {
+          var response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + encodeURIComponent(apiKey), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ returnSecureToken: true })
+          });
+          var data = await response.json().catch(function () { return {}; });
+          if (!response.ok || !data.idToken) {
+            var message = data.error && data.error.message ? data.error.message : 'Could not connect to the request system.';
+            if (message.indexOf('ADMIN_ONLY_OPERATION') >= 0) message = 'The request form is connected, but Firebase Anonymous sign-in needs to be enabled first.';
+            throw new Error(message);
+          }
+          return data.idToken;
+        }
+
+        async function sendRequest(payload) {
+          var token = await anonymousToken();
+          var url = 'https://firestore.googleapis.com/v1/projects/' + encodeURIComponent(projectId) + '/databases/(default)/documents/customerRequests';
+          var response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: JSON.stringify({ fields: firestoreFields(payload) })
+          });
+          var data = await response.json().catch(function () { return {}; });
+          if (!response.ok) {
+            var message = data.error && data.error.message ? data.error.message : 'Could not send the request.';
+            if (message.indexOf('PERMISSION_DENIED') >= 0 || message.indexOf('Missing or insufficient permissions') >= 0) message = 'The request form is connected, but Firestore permissions need to allow new customer requests.';
+            throw new Error(message);
+          }
+        }
+
+        document.getElementById('requestForm').addEventListener('submit', async function (event) {
+          event.preventDefault();
+          if (document.getElementById('companyWebsiteInput').value) {
+            showStatus('Thank you. Your request has been sent.');
+            return;
+          }
+          var payload = {
+            requestType: document.getElementById('requestType').value,
+            name: document.getElementById('nameInput').value,
+            phone: document.getElementById('phoneInput').value,
+            email: document.getElementById('emailInput').value,
+            serviceAddress: document.getElementById('addressInput').value,
+            city: document.getElementById('cityInput').value,
+            state: 'MN',
+            zip: document.getElementById('zipInput').value,
+            serviceType: document.getElementById('serviceInput').value,
+            timeline: document.getElementById('timelineInput').value,
+            preferredContact: document.getElementById('preferredContactInput').value,
+            message: document.getElementById('messageInput').value,
+            sourceUrl: window.location.href,
+            createdAtIso: new Date().toISOString()
+          };
+          if (!payload.name.trim()) { showStatus('Please enter your name.', true); return; }
+          if (!payload.phone.trim() && !payload.email.trim()) { showStatus('Please enter a phone number or email.', true); return; }
+          if (!apiKey) { showStatus('This request form is not connected yet. Please call (763) 333-9004 or email A.Wiley@mplsnorth.com.', true); return; }
+          button.disabled = true;
+          button.textContent = 'Sending...';
+          try {
+            await sendRequest(payload);
+            event.target.reset();
+            showStatus('Thank you. Your request has been sent.');
+          } catch (error) {
+            showStatus(error.message + ' Please call (763) 333-9004 or email A.Wiley@mplsnorth.com.', true);
+          } finally {
+            button.disabled = false;
+            button.textContent = 'Send Request';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
