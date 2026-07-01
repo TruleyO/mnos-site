@@ -1,157 +1,316 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Employee Punch Clock - Minneapolis North Outdoor Services LLC</title>
-  <style>
-    body{margin:0;font-family:Arial,sans-serif;background:#f5f7f4;color:#15221b}
-    main{max-width:520px;margin:0 auto;padding:24px 16px}
-    .brand{text-align:center;margin-bottom:20px}
-    .logo{width:150px;height:150px;object-fit:contain;display:block;margin:0 auto 12px}
-    h1{font-size:28px;margin:0 0 8px} h2{font-size:20px;margin:0 0 10px}
-    p{line-height:1.45;color:#52645b}
-    .card{background:white;border:1px solid #d9e0da;border-radius:10px;padding:18px;margin-top:14px;box-shadow:0 10px 28px rgba(20,35,28,.08)}
-    .status{background:#eef5f1;border:1px solid #cfe1d7;border-radius:8px;padding:12px;color:#173d2c;font-weight:700}
-    .bad{background:#fae8e8;border-color:#efc4c4;color:#9a2d2d}
-    label{display:block;margin-top:14px;font-size:13px;font-weight:700;color:#52645b}
-    input{width:100%;min-height:46px;margin-top:6px;padding:10px 12px;border:1px solid #bac8c0;border-radius:8px;font-size:16px;box-sizing:border-box}
-    button{width:100%;min-height:48px;margin-top:14px;border:0;border-radius:8px;background:#1f6f55;color:white;font-size:16px;font-weight:800}
-    button.secondary{background:white;color:#15221b;border:1px solid #bac8c0}
-    button.danger{background:#a53b3b}
-    button:disabled{opacity:.55}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .small{font-size:13px}
-  </style>
-</head>
-<body>
-  <main>
-    <section class="brand">
-      <img class="logo" src="../Logo_Transparent.jpg" alt="Minneapolis North Outdoor Services LLC logo">
-      <h1>Employee Punch Clock</h1>
-      <p>Minneapolis North Outdoor Services LLC</p>
-    </section>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mobile Punch - Minneapolis North Outdoor Services LLC</title>
+    <link rel="icon" href="assets/primary-logo.ico" />
+    <style>
+      :root { --ink:#16201c; --muted:#64716b; --green:#1f6f55; --line:#d9ded8; --bg:#f5f6f3; --danger:#b04444; --amber:#a96018; }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100vh; background:var(--bg); color:var(--ink); font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      main { width:min(560px, 100%); margin:0 auto; padding:20px; }
+      .logo { width:112px; height:112px; object-fit:contain; display:block; margin:8px auto 12px; }
+      h1 { margin:0; font-size:26px; text-align:center; }
+      p { color:var(--muted); line-height:1.45; }
+      .card { margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:10px; background:#fff; box-shadow:0 12px 36px rgba(20,37,31,.08); }
+      label { display:grid; gap:6px; margin-bottom:12px; color:var(--muted); font-size:13px; font-weight:700; }
+      input, select, textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid #bdc8bf; border-radius:8px; font:inherit; color:var(--ink); background:#fff; }
+      textarea { min-height:82px; resize:vertical; }
+      button { width:100%; min-height:48px; border:1px solid var(--green); border-radius:8px; color:#fff; background:var(--green); font:inherit; font-weight:800; }
+      button.secondary { color:var(--ink); border-color:#bdc8bf; background:#fff; }
+      button.danger { border-color:var(--danger); background:var(--danger); }
+      button:disabled { opacity:.55; }
+      .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .status { padding:12px; border-radius:8px; background:#eef3ef; color:var(--ink); }
+      .status.bad { background:#f8e8e8; color:var(--danger); }
+      .status.warn { background:#fbefd9; color:var(--amber); }
+      .tiny { font-size:12px; }
+      .hidden { display:none; }
+      @media (max-width:520px) { .row { grid-template-columns:1fr; } main { padding:14px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img class="logo" src="assets/primary-logo.jpg" alt="Minneapolis North Outdoor Services LLC" />
+      <h1>Employee Punch</h1>
+      <p class="tiny" style="text-align:center;">Punches are allowed only at the shop or a saved jobsite.</p>
 
-    <section class="card">
-      <div id="saveStatus" class="status">Cloud punch clock is ready. Check location before punching.</div>
-      <p class="small">Punches are saved to the company cloud database with GPS location.</p>
-    </section>
+      <section id="loginCard" class="card">
+        <label>Employee PIN<input id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter PIN"></label>
+        <label>Employee Name<input id="employeeNameInput" autocomplete="name" placeholder="Optional for cloud punch"></label>
+        <button id="loginButton" type="button">Continue</button>
+        <p class="tiny">Ask the office to set your PIN in Team settings.</p>
+      </section>
 
-    <section class="card">
-      <h2>Employee</h2>
-      <label>Employee name<input id="employeeName" placeholder="Full name"></label>
-      <label>Employee PIN<input id="employeePin" inputmode="numeric" placeholder="PIN"></label>
-      <label>Job / notes<input id="jobNotes" placeholder="Shop, customer, or job notes"></label>
-    </section>
+      <section id="punchCard" class="card hidden">
+        <div id="employeeStatus" class="status"></div>
+        <div id="activeStatus" class="status hidden" style="margin-top:10px;"></div>
+        <div style="margin-top:14px;">
+          <label>Customer / Jobsite<select id="customerSelect"></select></label>
+          <label>Invoice<select id="invoiceSelect"></select></label>
+          <label>Notes<textarea id="notesInput" placeholder="Optional notes"></textarea></label>
+        </div>
+        <div class="row">
+          <button id="punchInButton" type="button">Punch In</button>
+          <button id="punchOutButton" class="danger" type="button">Punch Out</button>
+        </div>
+        <button id="refreshLocationButton" class="secondary" style="margin-top:10px;" type="button">Check Location</button>
+        <button id="logoutButton" class="secondary" style="margin-top:10px;" type="button">Switch Employee</button>
+        <p id="locationStatus" class="tiny"></p>
+      </section>
+    </main>
 
-    <section class="card">
-      <h2>Location Check</h2>
-      <button id="locationButton" class="secondary" type="button">Check Phone Location</button>
-      <p id="locationResult" class="small"></p>
-    </section>
+    <script>
+      (function () {
+        var STORAGE_KEY = 'outdoorBidStudio.v1';
+        var state = loadState();
+        var params = new URLSearchParams(window.location.search);
+        var CLOUD_PROJECT_ID = params.get('projectId') || localStorage.getItem('punchFirebaseProjectId') || 'minneapolis-north-punch-clock';
+        var CLOUD_API_KEY = params.get('apiKey') || localStorage.getItem('punchFirebaseApiKey') || '';
+        if (params.get('projectId')) localStorage.setItem('punchFirebaseProjectId', CLOUD_PROJECT_ID);
+        if (params.get('apiKey')) localStorage.setItem('punchFirebaseApiKey', CLOUD_API_KEY);
+        var cloudToken = localStorage.getItem('punchFirebaseToken') || '';
+        var cloudRefreshToken = localStorage.getItem('punchFirebaseRefreshToken') || '';
+        var cloudTokenExpiresAt = Number(localStorage.getItem('punchFirebaseTokenExpiresAt') || 0);
+        var currentUser = null;
+        var currentPosition = null;
+        var currentAllowedLocation = null;
 
-    <section class="card">
-      <h2>Punch In / Out</h2>
-      <div class="row">
-        <button id="punchInButton" type="button" disabled>Punch In</button>
-        <button id="punchOutButton" class="danger" type="button" disabled>Punch Out</button>
-      </div>
-    </section>
-  </main>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "REVOKED_GOOGLE_API_KEY",
-      authDomain: "minneapolis-north-punch-clock.firebaseapp.com",
-      projectId: "minneapolis-north-punch-clock",
-      storageBucket: "minneapolis-north-punch-clock.firebasestorage.app",
-      messagingSenderId: "452658831594",
-      appId: "1:452658831594:web:86b8b76c52ce58c18ff793"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    let currentPosition = null;
-
-    function getValue(id){ return document.getElementById(id).value.trim(); }
-
-    function setStatus(message, isBad){
-      const status = document.getElementById("saveStatus");
-      status.textContent = message;
-      status.className = isBad ? "status bad" : "status";
-    }
-
-    function updateButtons(){
-      document.getElementById("punchInButton").disabled = !currentPosition;
-      document.getElementById("punchOutButton").disabled = !currentPosition;
-    }
-
-    document.getElementById("locationButton").addEventListener("click", function(){
-      const result = document.getElementById("locationResult");
-      result.textContent = "Checking location...";
-
-      navigator.geolocation.getCurrentPosition(function(position){
-        currentPosition = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracyMeters: position.coords.accuracy || null
-        };
-
-        result.textContent = "Location works: " + currentPosition.latitude.toFixed(6) + ", " + currentPosition.longitude.toFixed(6);
-        setStatus("Location confirmed. You can punch in or out now.", false);
-        updateButtons();
-      }, function(){
-        currentPosition = null;
-        updateButtons();
-        result.textContent = "Location permission was blocked or unavailable.";
-        setStatus("Location permission is required before punching.", true);
-      }, { enableHighAccuracy:true, timeout:12000, maximumAge:30000 });
-    });
-
-    async function savePunch(action){
-      const employeeName = getValue("employeeName");
-      const employeePin = getValue("employeePin");
-      const jobNotes = getValue("jobNotes");
-
-      if(!employeeName || !employeePin){
-        setStatus("Enter employee name and PIN first.", true);
-        return;
-      }
-
-      if(!currentPosition){
-        setStatus("Check phone location before punching.", true);
-        return;
-      }
-
-      setStatus("Saving punch...", false);
-
-      try{
-        await addDoc(collection(db, "timePunchEvents"), {
-          company: "Minneapolis North Outdoor Services LLC",
-          action: action,
-          employeeName: employeeName,
-          employeePin: employeePin,
-          jobNotes: jobNotes,
-          latitude: currentPosition.latitude,
-          longitude: currentPosition.longitude,
-          accuracyMeters: currentPosition.accuracyMeters,
-          localTime: new Date().toLocaleString(),
-          createdAtIso: new Date().toISOString(),
-          createdAt: serverTimestamp(),
-          source: "mobile-punch-page"
+        function defaultState() {
+          return { settings: { company: { name: 'Minneapolis North Outdoor Services LLC' }, shop: { name: 'Shop', latitude: '', longitude: '', radiusFeet: 300 } }, users: [], customers: [], invoices: [], timeEntries: [] };
+        }
+        function loadState() {
+          try { return Object.assign(defaultState(), JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')); }
+          catch (error) { return defaultState(); }
+        }
+        function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+        function uid(prefix) { return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); }
+        function nowLocalInput() { var date = new Date(); date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); return date.toISOString().slice(0, 16); }
+        function numberValue(value) { var parsed = Number(value); return Number.isFinite(parsed) ? parsed : 0; }
+        function feetBetween(lat1, lon1, lat2, lon2) {
+          var aLat = numberValue(lat1), aLon = numberValue(lon1), bLat = numberValue(lat2), bLon = numberValue(lon2);
+          if (!aLat || !aLon || !bLat || !bLon) return null;
+          var toRad = function (value) { return value * Math.PI / 180; };
+          var earthFeet = 20902231;
+          var dLat = toRad(bLat - aLat), dLon = toRad(bLon - aLon);
+          var a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLon / 2) ** 2;
+          return earthFeet * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+        function userName(id) { var user = state.users.find(function (item) { return item.id === id; }); return user ? user.name : ''; }
+        function customerName(id) { var customer = state.customers.find(function (item) { return item.id === id; }); return customer ? customer.name : ''; }
+        function activeEntry() { return currentUser ? state.timeEntries.find(function (entry) { return entry.userId === currentUser.id && !entry.clockOut; }) : null; }
+        function allowedLocations() {
+          var locations = [];
+          if (Array.isArray(state.geofences)) state.geofences.forEach(function (fence) { if (fence.active !== false && fence.latitude && fence.longitude) locations.push({ type: fence.type || 'jobsite', name: fence.name || 'Geofence', latitude: fence.latitude, longitude: fence.longitude, radiusFeet: numberValue(fence.radiusFeet || 300), customerId: fence.customerId || '' }); });
+          var shop = state.settings && state.settings.shop ? state.settings.shop : {};
+          if (shop.latitude && shop.longitude) locations.push({ type: 'shop', name: shop.name || 'Shop', latitude: shop.latitude, longitude: shop.longitude, radiusFeet: numberValue(shop.radiusFeet || 300), customerId: '' });
+          state.customers.forEach(function (customer) {
+            if (customer.latitude && customer.longitude) locations.push({ type: 'jobsite', name: customer.name || 'Jobsite', latitude: customer.latitude, longitude: customer.longitude, radiusFeet: numberValue(customer.radiusFeet || 300), customerId: customer.id });
+          });
+          return locations;
+        }
+        function findAllowedLocation(position) {
+          var best = null;
+          allowedLocations().forEach(function (location) {
+            var distance = feetBetween(position.latitude, position.longitude, location.latitude, location.longitude);
+            if (distance != null && (!best || distance < best.distanceFeet)) best = Object.assign({}, location, { distanceFeet: distance });
+          });
+          if (best && best.distanceFeet <= best.radiusFeet) return best;
+          return best ? Object.assign({}, best, { blocked: true }) : null;
+        }
+        function setMessage(id, text, kind) {
+          var el = document.getElementById(id);
+          el.textContent = text;
+          el.className = kind ? 'status ' + kind : 'status';
+          el.classList.remove('hidden');
+        }
+        function cloudPunchEnabled() { return Boolean(CLOUD_API_KEY && CLOUD_PROJECT_ID); }
+        function clearCloudToken() {
+          cloudToken = '';
+          cloudRefreshToken = '';
+          cloudTokenExpiresAt = 0;
+          localStorage.removeItem('punchFirebaseToken');
+          localStorage.removeItem('punchFirebaseRefreshToken');
+          localStorage.removeItem('punchFirebaseTokenExpiresAt');
+        }
+        function rememberCloudToken(idToken, refreshToken, expiresIn) {
+          cloudToken = idToken || '';
+          cloudRefreshToken = refreshToken || cloudRefreshToken || '';
+          cloudTokenExpiresAt = Date.now() + Math.max(1, Number(expiresIn || 3600) - 60) * 1000;
+          localStorage.setItem('punchFirebaseToken', cloudToken);
+          if (cloudRefreshToken) localStorage.setItem('punchFirebaseRefreshToken', cloudRefreshToken);
+          localStorage.setItem('punchFirebaseTokenExpiresAt', String(cloudTokenExpiresAt));
+        }
+        function friendlyFirebaseError(message) {
+          message = String(message || '');
+          if (message.indexOf('API_KEY_INVALID') >= 0 || message.indexOf('API key not valid') >= 0) return 'Firebase API key was rejected. Open Bid Studio Settings, save the Firebase API key, then send a new punch link.';
+          if (message.indexOf('ADMIN_ONLY_OPERATION') >= 0 || message.indexOf('Anonymous sign-in') >= 0) return 'Firebase Anonymous sign-in needs to be enabled for the phone punch page.';
+          if (message.indexOf('PERMISSION_DENIED') >= 0 || message.indexOf('Missing or insufficient permissions') >= 0) return 'Firestore rules need to allow phone punches to create timePunchEvents.';
+          if (message.indexOf('Request had invalid authentication credentials') >= 0 || message.indexOf('INVALID_ID_TOKEN') >= 0) return 'Firebase phone login expired. Try the punch again.';
+          return message || 'Could not save cloud punch.';
+        }
+        async function refreshFirebaseAnonymousToken() {
+          if (!cloudRefreshToken) return '';
+          var response = await fetch('https://securetoken.googleapis.com/v1/token?key=' + encodeURIComponent(CLOUD_API_KEY), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'grant_type=refresh_token&refresh_token=' + encodeURIComponent(cloudRefreshToken)
+          });
+          var data = await response.json().catch(function () { return {}; });
+          if (!response.ok || !data.id_token) {
+            clearCloudToken();
+            return '';
+          }
+          rememberCloudToken(data.id_token, data.refresh_token || cloudRefreshToken, data.expires_in);
+          return cloudToken;
+        }
+        async function firebaseAnonymousToken() {
+          if (cloudToken && Date.now() < cloudTokenExpiresAt) return cloudToken;
+          var refreshed = await refreshFirebaseAnonymousToken();
+          if (refreshed) return refreshed;
+          var response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + encodeURIComponent(CLOUD_API_KEY), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ returnSecureToken: true })
+          });
+          var data = await response.json().catch(function () { return {}; });
+          if (!response.ok || !data.idToken) throw new Error(friendlyFirebaseError(data.error && data.error.message ? data.error.message : 'Firebase anonymous sign-in failed.'));
+          rememberCloudToken(data.idToken, data.refreshToken, data.expiresIn);
+          return cloudToken;
+        }
+        function fieldValue(value) {
+          if (typeof value === 'number') return Number.isInteger(value) ? { integerValue: value } : { doubleValue: value };
+          if (typeof value === 'boolean') return { booleanValue: value };
+          return { stringValue: String(value == null ? '' : value) };
+        }
+        async function saveCloudPunchFields(fields, retryOnAuthFailure) {
+          var token = await firebaseAnonymousToken();
+          var url = 'https://firestore.googleapis.com/v1/projects/' + encodeURIComponent(CLOUD_PROJECT_ID) + '/databases/(default)/documents/timePunchEvents';
+          var response = await fetch(url, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: fields }) });
+          if (!response.ok && retryOnAuthFailure && (response.status === 401 || response.status === 403)) {
+            clearCloudToken();
+            return saveCloudPunchFields(fields, false);
+          }
+          if (!response.ok) {
+            var data = await response.json().catch(function () { return {}; });
+            throw new Error(friendlyFirebaseError(data.error && data.error.message ? data.error.message : 'Could not save cloud punch.'));
+          }
+          return true;
+        }
+        async function sendCloudPunchEvent(action) {
+          if (!cloudPunchEnabled()) return false;
+          var event = {
+            action: action,
+            employeePin: currentUser.pin || document.getElementById('pinInput').value.trim(),
+            employeeName: currentUser.name || document.getElementById('employeeNameInput').value.trim(),
+            localTime: nowLocalInput(),
+            createdAtIso: new Date().toISOString(),
+            jobNotes: document.getElementById('notesInput').value.trim(),
+            locationName: currentAllowedLocation ? currentAllowedLocation.name : '',
+            customerId: document.getElementById('customerSelect').value || (currentAllowedLocation && currentAllowedLocation.customerId) || '',
+            invoiceId: document.getElementById('invoiceSelect').value || '',
+            latitude: currentPosition ? currentPosition.latitude : '',
+            longitude: currentPosition ? currentPosition.longitude : '',
+            distanceFeet: currentAllowedLocation && currentAllowedLocation.distanceFeet != null ? Math.round(currentAllowedLocation.distanceFeet) : ''
+          };
+          var fields = {};
+          Object.keys(event).forEach(function (key) { fields[key] = fieldValue(event[key]); });
+          return saveCloudPunchFields(fields, true);
+        }
+        function refreshOptions() {
+          var customerSelect = document.getElementById('customerSelect');
+          customerSelect.innerHTML = '<option value="">Shop / none</option>' + state.customers.map(function (customer) { return '<option value="' + customer.id + '">' + (customer.name || 'Unnamed customer') + '</option>'; }).join('');
+          var invoiceSelect = document.getElementById('invoiceSelect');
+          invoiceSelect.innerHTML = '<option value="">None</option>' + state.invoices.map(function (invoice) { return '<option value="' + invoice.id + '">' + invoice.number + ' - ' + customerName(invoice.customerId) + '</option>'; }).join('');
+        }
+        function refreshActive() {
+          var active = activeEntry();
+          document.getElementById('punchInButton').disabled = Boolean(active);
+          document.getElementById('punchOutButton').disabled = !active;
+          if (active) setMessage('activeStatus', 'Currently punched in since ' + active.clockIn + ' at ' + (active.locationName || customerName(active.customerId) || 'approved location'), 'warn');
+          else document.getElementById('activeStatus').classList.add('hidden');
+        }
+        function checkLocation(callback) {
+          document.getElementById('locationStatus').textContent = 'Checking location...';
+          if (!navigator.geolocation) { setMessage('employeeStatus', 'This phone/browser does not support location checks.', 'bad'); return; }
+          navigator.geolocation.getCurrentPosition(function (pos) {
+            currentPosition = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+            currentAllowedLocation = findAllowedLocation(currentPosition);
+            if (!currentAllowedLocation) {
+              if (cloudPunchEnabled()) {
+                setMessage('employeeStatus', 'Cloud punch mode: GPS will be sent to office for review.', 'warn');
+                if (callback) callback();
+              } else {
+                setMessage('employeeStatus', 'No shop or jobsite GPS areas are set up yet.', 'bad');
+              }
+            } else if (currentAllowedLocation.blocked) {
+              setMessage('employeeStatus', 'Too far from an approved location. Nearest: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away).', 'bad');
+            } else {
+              setMessage('employeeStatus', 'Approved location: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away).');
+              if (currentAllowedLocation.customerId) document.getElementById('customerSelect').value = currentAllowedLocation.customerId;
+              if (callback) callback();
+            }
+            document.getElementById('locationStatus').textContent = 'GPS: ' + currentPosition.latitude.toFixed(6) + ', ' + currentPosition.longitude.toFixed(6);
+          }, function () {
+            setMessage('employeeStatus', 'Location permission is required to punch in or out.', 'bad');
+            document.getElementById('locationStatus').textContent = '';
+          }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
+        }
+        document.getElementById('loginButton').addEventListener('click', function () {
+          var pin = document.getElementById('pinInput').value.trim();
+          currentUser = state.users.find(function (user) { return user.pin && user.pin === pin && user.active !== false; }) || null;
+          if (!currentUser && cloudPunchEnabled()) currentUser = { id: 'cloud-' + pin, name: document.getElementById('employeeNameInput').value.trim() || 'Cloud Employee', pin: pin, hourlyRate: 0, active: true };
+          if (!currentUser) { alert('PIN not found or inactive. Ask office to update the punch link or enable cloud punch.'); return; }
+          document.getElementById('loginCard').classList.add('hidden');
+          document.getElementById('punchCard').classList.remove('hidden');
+          refreshOptions();
+          refreshActive();
+          checkLocation();
         });
-
-        setStatus(action === "in" ? "Punch in saved." : "Punch out saved.", false);
-      } catch(error){
-        setStatus("Punch did not save. Check Firebase setup and try again.", true);
-      }
-    }
-
-    document.getElementById("punchInButton").addEventListener("click", function(){ savePunch("in"); });
-    document.getElementById("punchOutButton").addEventListener("click", function(){ savePunch("out"); });
-  </script>
-</body>
+        document.getElementById('refreshLocationButton').addEventListener('click', function () { checkLocation(); });
+        document.getElementById('logoutButton').addEventListener('click', function () { currentUser = null; document.getElementById('pinInput').value = ''; document.getElementById('punchCard').classList.add('hidden'); document.getElementById('loginCard').classList.remove('hidden'); });
+        document.getElementById('punchInButton').addEventListener('click', function () {
+          checkLocation(function () {
+            if ((currentAllowedLocation && currentAllowedLocation.blocked) || (!currentAllowedLocation && !cloudPunchEnabled()) || activeEntry()) return;
+            var locationName = currentAllowedLocation ? currentAllowedLocation.name : 'Cloud GPS review';
+            var customerId = document.getElementById('customerSelect').value || (currentAllowedLocation && currentAllowedLocation.customerId) || '';
+            var distanceFeet = currentAllowedLocation && currentAllowedLocation.distanceFeet != null ? Math.round(currentAllowedLocation.distanceFeet) : '';
+            var entry = { id: uid('time'), userId: currentUser.id, customerId: customerId, invoiceId: document.getElementById('invoiceSelect').value, clockIn: nowLocalInput(), clockOut: '', breakMinutes: 0, hourlyRate: numberValue(currentUser.hourlyRate), source: 'mobile', locationName: locationName, latitude: currentPosition.latitude, longitude: currentPosition.longitude, distanceFeet: distanceFeet, notes: document.getElementById('notesInput').value.trim(), createdAt: new Date().toISOString().slice(0, 10) };
+            state.timeEntries.unshift(entry);
+            saveState();
+            sendCloudPunchEvent('in').then(function (sent) {
+              refreshActive();
+              setMessage('employeeStatus', 'Punched in at ' + locationName + (sent ? ' and sent to office.' : '.') );
+            }).catch(function (error) {
+              refreshActive();
+              setMessage('employeeStatus', 'Punched in on this phone, but cloud sync failed: ' + error.message, 'warn');
+            });
+          });
+        });
+        document.getElementById('punchOutButton').addEventListener('click', function () {
+          checkLocation(function () {
+            var active = activeEntry();
+            if ((currentAllowedLocation && currentAllowedLocation.blocked) || (!currentAllowedLocation && !cloudPunchEnabled()) || !active) return;
+            var outLocationName = currentAllowedLocation ? currentAllowedLocation.name : 'Cloud GPS review';
+            var outDistanceFeet = currentAllowedLocation && currentAllowedLocation.distanceFeet != null ? Math.round(currentAllowedLocation.distanceFeet) : '';
+            active.clockOut = nowLocalInput();
+            active.clockOutLatitude = currentPosition.latitude;
+            active.clockOutLongitude = currentPosition.longitude;
+            active.clockOutLocationName = outLocationName;
+            active.clockOutDistanceFeet = outDistanceFeet;
+            if (document.getElementById('notesInput').value.trim()) active.notes = (active.notes ? active.notes + '\n' : '') + document.getElementById('notesInput').value.trim();
+            saveState();
+            sendCloudPunchEvent('out').then(function (sent) {
+              refreshActive();
+              setMessage('employeeStatus', 'Punched out at ' + outLocationName + (sent ? ' and sent to office.' : '.') );
+            }).catch(function (error) {
+              refreshActive();
+              setMessage('employeeStatus', 'Punched out on this phone, but cloud sync failed: ' + error.message, 'warn');
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
 </html>
