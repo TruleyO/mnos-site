@@ -231,10 +231,30 @@
           if (active) setMessage('activeStatus', 'Currently punched in since ' + active.clockIn + ' at ' + (active.locationName || customerName(active.customerId) || 'approved location'), 'warn');
           else document.getElementById('activeStatus').classList.add('hidden');
         }
+        function locationBlocksCloudPunch() {
+          return currentAllowedLocation && currentAllowedLocation.blocked && !cloudPunchEnabled();
+        }
+        function setRefreshLocationBusy(busy) {
+          var button = document.getElementById('refreshLocationButton');
+          button.disabled = Boolean(busy);
+          button.textContent = busy ? 'Checking Location...' : 'Check Location';
+        }
+        function locationErrorMessage(error) {
+          if (error && error.code === 1) return 'Location is blocked for this site. Open the browser site settings for mplsnorth.com and allow Location, then tap Check Location again.';
+          if (error && error.code === 2) return 'Your phone could not find its location. Turn on phone Location/GPS and try Check Location again.';
+          if (error && error.code === 3) return 'Location check timed out. Step near a window or outside, then tap Check Location again.';
+          return 'Location permission is required to punch in or out.';
+        }
         function checkLocation(callback) {
           document.getElementById('locationStatus').textContent = 'Checking location...';
-          if (!navigator.geolocation) { setMessage('employeeStatus', 'This phone/browser does not support location checks.', 'bad'); return; }
+          setRefreshLocationBusy(true);
+          if (!navigator.geolocation) {
+            setRefreshLocationBusy(false);
+            setMessage('employeeStatus', 'This phone/browser does not support location checks.', 'bad');
+            return;
+          }
           navigator.geolocation.getCurrentPosition(function (pos) {
+            setRefreshLocationBusy(false);
             currentPosition = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
             currentAllowedLocation = findAllowedLocation(currentPosition);
             if (!currentAllowedLocation) {
@@ -245,17 +265,23 @@
                 setMessage('employeeStatus', 'No shop or jobsite GPS areas are set up yet.', 'bad');
               }
             } else if (currentAllowedLocation.blocked) {
-              setMessage('employeeStatus', 'Too far from an approved location. Nearest: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away).', 'bad');
+              if (cloudPunchEnabled()) {
+                setMessage('employeeStatus', 'Outside saved geofence. Nearest: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away). GPS will be sent to office for review.', 'warn');
+                if (callback) callback();
+              } else {
+                setMessage('employeeStatus', 'Too far from an approved location. Nearest: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away).', 'bad');
+              }
             } else {
               setMessage('employeeStatus', 'Approved location: ' + currentAllowedLocation.name + ' (' + Math.round(currentAllowedLocation.distanceFeet) + ' ft away).');
               if (currentAllowedLocation.customerId) document.getElementById('customerSelect').value = currentAllowedLocation.customerId;
               if (callback) callback();
             }
             document.getElementById('locationStatus').textContent = 'GPS: ' + currentPosition.latitude.toFixed(6) + ', ' + currentPosition.longitude.toFixed(6);
-          }, function () {
-            setMessage('employeeStatus', 'Location permission is required to punch in or out.', 'bad');
+          }, function (error) {
+            setRefreshLocationBusy(false);
+            setMessage('employeeStatus', locationErrorMessage(error), 'bad');
             document.getElementById('locationStatus').textContent = '';
-          }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
+          }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
         }
         document.getElementById('loginButton').addEventListener('click', function () {
           var pin = document.getElementById('pinInput').value.trim();
@@ -272,9 +298,9 @@
         document.getElementById('logoutButton').addEventListener('click', function () { currentUser = null; document.getElementById('pinInput').value = ''; document.getElementById('punchCard').classList.add('hidden'); document.getElementById('loginCard').classList.remove('hidden'); });
         document.getElementById('punchInButton').addEventListener('click', function () {
           checkLocation(function () {
-            if ((currentAllowedLocation && currentAllowedLocation.blocked) || (!currentAllowedLocation && !cloudPunchEnabled()) || activeEntry()) return;
-            var locationName = currentAllowedLocation ? currentAllowedLocation.name : 'Cloud GPS review';
-            var customerId = document.getElementById('customerSelect').value || (currentAllowedLocation && currentAllowedLocation.customerId) || '';
+            if (locationBlocksCloudPunch() || (!currentAllowedLocation && !cloudPunchEnabled()) || activeEntry()) return;
+            var locationName = currentAllowedLocation && !currentAllowedLocation.blocked ? currentAllowedLocation.name : 'Cloud GPS review';
+            var customerId = document.getElementById('customerSelect').value || (currentAllowedLocation && !currentAllowedLocation.blocked && currentAllowedLocation.customerId) || '';
             var distanceFeet = currentAllowedLocation && currentAllowedLocation.distanceFeet != null ? Math.round(currentAllowedLocation.distanceFeet) : '';
             var entry = { id: uid('time'), userId: currentUser.id, customerId: customerId, invoiceId: document.getElementById('invoiceSelect').value, clockIn: nowLocalInput(), clockOut: '', breakMinutes: 0, hourlyRate: numberValue(currentUser.hourlyRate), source: 'mobile', locationName: locationName, latitude: currentPosition.latitude, longitude: currentPosition.longitude, distanceFeet: distanceFeet, notes: document.getElementById('notesInput').value.trim(), createdAt: new Date().toISOString().slice(0, 10) };
             state.timeEntries.unshift(entry);
@@ -291,8 +317,8 @@
         document.getElementById('punchOutButton').addEventListener('click', function () {
           checkLocation(function () {
             var active = activeEntry();
-            if ((currentAllowedLocation && currentAllowedLocation.blocked) || (!currentAllowedLocation && !cloudPunchEnabled()) || !active) return;
-            var outLocationName = currentAllowedLocation ? currentAllowedLocation.name : 'Cloud GPS review';
+            if (locationBlocksCloudPunch() || (!currentAllowedLocation && !cloudPunchEnabled()) || !active) return;
+            var outLocationName = currentAllowedLocation && !currentAllowedLocation.blocked ? currentAllowedLocation.name : 'Cloud GPS review';
             var outDistanceFeet = currentAllowedLocation && currentAllowedLocation.distanceFeet != null ? Math.round(currentAllowedLocation.distanceFeet) : '';
             active.clockOut = nowLocalInput();
             active.clockOutLatitude = currentPosition.latitude;
